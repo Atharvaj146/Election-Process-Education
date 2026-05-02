@@ -21,7 +21,7 @@ Your responses must be:
 - Always use markdown formatting.`;
 
 export const geminiApi = {
-  async sendChatMessage(prompt: string, history: any[] = []): Promise<string> {
+  async sendChatMessage(prompt: string, history: { role: string; parts: { text: string }[] }[] = []): Promise<string> {
     try {
       const model = genAI.getGenerativeModel({
         model: 'gemini-2.5-flash',

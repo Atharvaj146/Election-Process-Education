@@ -37,16 +37,18 @@ export default function ChatPage() {
 
   // Initialize and handle language changes for the first message
   useEffect(() => {
-    if (messages.length === 0 || (messages.length === 1 && messages[0].role === 'assistant')) {
-      setMessages([
-        {
+    setMessages(prev => {
+      if (prev.length === 0 || (prev.length === 1 && prev[0].role === 'assistant')) {
+        return [{
           role: 'assistant',
           content: language === 'en' 
             ? "Namaste! I'm your MatDaan AI Guide powered by Gemini 2.5 Flash. How can I help you participate in India's democracy today?"
             : "नमस्ते! मैं जेमिनी 2.5 फ्लैश द्वारा संचालित आपका मतदान AI गाइड हूँ। आज मैं भारत के लोकतंत्र में भाग लेने में आपकी कैसे मदद कर सकता हूँ?"
-        }
-      ])
-    }
+        }]
+      }
+      return prev
+    })
+     
   }, [language])
 
   const [input, setInput] = useState('')

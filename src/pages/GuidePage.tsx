@@ -14,6 +14,7 @@ const InteractiveEVM = ({ language }: { language: string }) => {
     setVotedFor(id)
     
     try {
+       
       const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
       const osc = ctx.createOscillator()
       osc.type = 'sine'
@@ -21,7 +22,9 @@ const InteractiveEVM = ({ language }: { language: string }) => {
       osc.connect(ctx.destination)
       osc.start()
       setTimeout(() => osc.stop(), 1500)
-    } catch (e) { }
+    } catch { 
+      // Ignore audio initialization errors
+    }
 
     setTimeout(() => setVotedFor(null), 5000)
   }

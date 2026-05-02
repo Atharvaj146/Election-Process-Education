@@ -33,6 +33,7 @@ export default function QuizPage() {
   }
 
   useEffect(() => {
+     
     initializeQuiz()
   }, [])
 
@@ -101,12 +102,14 @@ export default function QuizPage() {
           url: url,
         })
         toast.success(language === 'en' ? "Thanks for sharing!" : "साझा करने के लिए धन्यवाद!")
-      } catch (err) { }
+      } catch { 
+        // ignore share cancellation
+      }
     } else {
       try {
         await navigator.clipboard.writeText(`${shareText}\n${url}`)
         toast.success(language === 'en' ? "Score copied to clipboard!" : "स्कोर क्लिपबोर्ड पर कॉपी हो गया!")
-      } catch (err) {
+      } catch {
         toast.error(language === 'en' ? "Failed to copy. Try again!" : "कॉपी करने में विफल। पुनः प्रयास करें!")
       }
     }
