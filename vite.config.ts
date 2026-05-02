@@ -21,18 +21,7 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'esnext',
-    minify: 'esbuild',
-    cssMinify: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-ui': ['framer-motion', 'gsap', 'lucide-react', 'recharts'],
-          'vendor-ai': ['@google/generative-ai'],
-        },
-      },
-    },
-    chunkSizeWarningLimit: 1000,
+    outDir: 'dist',
+    emptyOutDir: true,
   },
 })
