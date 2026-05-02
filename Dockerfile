@@ -2,14 +2,14 @@
 FROM node:20-slim AS build-stage
 WORKDIR /app
 
-# Copy ONLY package.json (skip package-lock.json to avoid Windows/Linux conflicts)
-COPY package.json ./
+# Set the API key for the Vite build process
+ARG VITE_GEMINI_API_KEY
+ENV VITE_GEMINI_API_KEY=$VITE_GEMINI_API_KEY
 
-# Install dependencies for Linux specifically
+COPY package.json ./
 RUN npm install --include=optional --legacy-peer-deps
 
 COPY . .
-# Build the app
 RUN npx vite build
 
 # Stage 2: Run the server

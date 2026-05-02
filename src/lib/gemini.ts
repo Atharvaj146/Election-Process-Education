@@ -1,30 +1,44 @@
 /**
  * MatDaan Gemini API Service
  * 
- * Securely communicates with our backend proxy to interact with Gemini.
- * This prevents exposing the API key in the browser.
+ * Calls the Gemini API directly from the frontend.
  */
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const systemPrompt = `You are **MatDaan Guide (मतदान गाइड)**, an AI assistant that educates Indian citizens about the election process.
+Your responses must be:
+- **Accurate**: Only use verified facts from the Election Commission of India (ECI).
+- **Non-partisan**: Never endorse, criticize, or discuss any political party, candidate, or ideology.
+- **Helpful**: Give clear, actionable answers. Use bullet points and bold text for readability.
+- **Concise**: Keep answers focused. Aim for 150-300 words unless the user asks for detail.
+- **Bilingual-aware**: You may include Hindi terms in parentheses where helpful.
+- Respond in the language of the user's query (English or Hindi).
+- Cite official sources like ECI (eci.gov.in) when relevant.
+- If asked about political parties, candidates, or ideologies, politely decline.
+- Always use markdown formatting.`;
 
 export const geminiApi = {
   async sendChatMessage(prompt: string, history: any[] = []): Promise<string> {
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt, history }),
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-2.5-flash',
+        systemInstruction: systemPrompt,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.content || errorData.error || 'Failed to fetch AI response');
+      // Filter history: Gemini requires it to start with a 'user' role message
+      let chatHistory = history || [];
+      while (chatHistory.length > 0 && chatHistory[0].role === 'model') {
+        chatHistory = chatHistory.slice(1);
       }
 
-      const data = await response.json();
-      return data.content;
+      const chat = model.startChat({ history: chatHistory });
+      const result = await chat.sendMessage(prompt);
+      return result.response.text();
     } catch (error) {
-      console.error('Chat API Error:', error);
+      console.error('Gemini API Error:', error);
       throw error;
     }
   }

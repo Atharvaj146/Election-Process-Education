@@ -1,7 +1,13 @@
 steps:
-  # Build the container image
+  # Build the container image with the API key
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/matdaan-guide', '.']
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'VITE_GEMINI_API_KEY=AIzaSyB1kG7lBfKAPxvWt5ti5_Z9BgXbki-IVcw'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/matdaan-guide'
+      - '.'
 
   # Push the image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
