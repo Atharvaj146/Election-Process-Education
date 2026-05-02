@@ -2,8 +2,10 @@
 FROM node:20-slim AS build-stage
 WORKDIR /app
 
+# Ensure Vite can see the API key from the environment
 ARG VITE_GEMINI_API_KEY
-ENV VITE_GEMINI_API_KEY=$VITE_GEMINI_API_KEY
+ENV VITE_GEMINI_API_KEY=${VITE_GEMINI_API_KEY}
+RUN echo "Building with API Key starting with: ${VITE_GEMINI_API_KEY:0:5}..."
 
 COPY package.json package-lock.json ./
 RUN npm install --include=optional --legacy-peer-deps
