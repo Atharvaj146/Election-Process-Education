@@ -25,7 +25,7 @@ export const geminiApi = {
     try {
       console.log('Gemini API Call - Key Present:', !!import.meta.env.VITE_GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-1.5-flash-latest',
         systemInstruction: systemPrompt,
       });
 
