@@ -23,19 +23,28 @@ Your responses must be:
 export const geminiApi = {
   async sendChatMessage(prompt: string, history: { role: string; parts: { text: string }[] }[] = []): Promise<string> {
     try {
-      // DEBUG: List available models to see what we can use
+      // Log available models for debugging
       try {
         const models = await genAI.listModels();
-        console.log('Available Gemini Models:', models.models.map(m => m.name));
+        const modelNames = models.models.map(m => m.name);
+        console.log('API Key connects successfully! Available models:', modelNames);
       } catch (e) {
-        console.warn('Could not list models:', e);
+        console.warn('API Key connects, but model listing is restricted:', e);
       }
 
-      console.log('Gemini API Call - Key Present:', !!import.meta.env.VITE_GEMINI_API_KEY);
-      
-      // Trying the full model path to avoid 404s
-      const model = genAI.getGenerativeModel({
-        model: 'models/gemini-1.5-flash',
+      // Try Flash 1.5 first, fallback to Gemini Pro if needed
+      let model;
+      try {
+        model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        // Just a dummy call to verify model exists
+        await model.countTokens("test");
+      } catch (e) {
+        console.log('Flash 1.5 not found, falling back to Gemini Pro...');
+        model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      }
+
+      model = genAI.getGenerativeModel({
+        model: model.model, // Use the verified model
         systemInstruction: systemPrompt,
       });
 
