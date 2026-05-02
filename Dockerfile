@@ -6,7 +6,7 @@ WORKDIR /app
 ARG VITE_GEMINI_API_KEY
 ENV VITE_GEMINI_API_KEY=${VITE_GEMINI_API_KEY}
 
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm install --include=optional --legacy-peer-deps
 
 COPY . .
