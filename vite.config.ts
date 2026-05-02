@@ -23,5 +23,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      external: [],
+      // This is the fix for the recharts/react-is issue
+      onwarn(warning, warn) {
+        if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return
+        if (warning.message.includes('react-is')) return
+        warn(warning)
+      }
+    }
   },
 })
