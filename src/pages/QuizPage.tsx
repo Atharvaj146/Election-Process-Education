@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { quizData } from '../data/quiz-questions'
 import confetti from 'canvas-confetti'
-import { toPng } from 'html-to-image'
+import { toJpeg } from 'html-to-image'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function QuizPage() {
@@ -71,9 +71,14 @@ export default function QuizPage() {
   const handleDownloadBadge = async () => {
     if (!badgeRef.current) return
     try {
-      const dataUrl = await toPng(badgeRef.current, { pixelRatio: 3 })
+      const dataUrl = await toJpeg(badgeRef.current, { 
+        pixelRatio: 2, // reduced to 2 to prevent mobile crash
+        quality: 0.95,
+        style: { transform: 'none', margin: '0' },
+        cacheBust: true
+      })
       const link = document.createElement('a')
-      link.download = `matdaan-quiz-badge-${language}.png`
+      link.download = `matdaan-quiz-badge-${language}.jpg`
       link.href = dataUrl
       link.click()
       toast.success(language === 'en' ? 'Badge downloaded!' : 'बैज डाउनलोड हो गया!')
