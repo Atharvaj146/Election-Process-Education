@@ -2,8 +2,9 @@
 FROM node:20-slim AS build-stage
 WORKDIR /app
 
-# Set the API key for the Vite build process
+# Ensure Vite can see the API key from the environment
 ARG VITE_GEMINI_API_KEY
+# This line is the secret sauce: it takes the key from either Arg or Env
 ENV VITE_GEMINI_API_KEY=$VITE_GEMINI_API_KEY
 
 COPY package.json ./
