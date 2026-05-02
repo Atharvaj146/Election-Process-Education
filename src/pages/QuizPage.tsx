@@ -252,13 +252,14 @@ export default function QuizPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-orange-500/5 to-transparent" />
               <CardContent className="p-8 sm:p-12 relative z-10">
 
-                <div
-                  ref={badgeRef}
-                  className="relative w-full max-w-sm mx-auto aspect-square rounded-3xl overflow-hidden mb-10 shadow-2xl shadow-black/20"
-                  style={{
-                    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-                  }}
-                >
+                <div className="w-full max-w-sm mx-auto mb-10">
+                  <div
+                    ref={badgeRef}
+                    className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-2xl shadow-black/20"
+                    style={{
+                      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+                    }}
+                  >
                   <div className="absolute top-0 left-0 right-0 h-2 flex">
                     <div className="flex-1 bg-[#FF9933]" />
                     <div className="flex-1 bg-white" />
@@ -292,6 +293,7 @@ export default function QuizPage() {
                     <p className="text-blue-300/30 text-[9px] mt-6 font-bold tracking-[0.3em] uppercase">
                       MatDaan Guide • मतदान गाइड
                     </p>
+                    </div>
                   </div>
                 </div>
 

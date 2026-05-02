@@ -4,7 +4,7 @@ steps:
     args:
       - 'build'
       - '--build-arg'
-      - 'VITE_GEMINI_API_KEY=AIzaSyB1kG7lBfKAPxvWt5ti5_Z9BgXbki-IVcw'
+      - 'VITE_GEMINI_API_KEY=$_VITE_GEMINI_API_KEY'
       - '-t'
       - 'gcr.io/$PROJECT_ID/matdaan-guide'
       - '.'
