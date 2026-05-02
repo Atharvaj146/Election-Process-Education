@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF9933"/>
+      <stop offset="100%" stop-color="#FFD700"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#g)"/>
+  <g transform="translate(32,32)" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Ballot box -->
+    <rect x="-14" y="-6" width="28" height="22" rx="3" fill="rgba(255,255,255,0.15)"/>
+    <line x1="-6" y1="-6" x2="6" y2="-6" stroke-width="4"/>
+    <!-- Ballot paper going in -->
+    <rect x="-5" y="-18" width="10" height="14" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+    <!-- Checkmark on ballot -->
+    <polyline points="-2,-12 0,-9 4,-15" stroke-width="2.5"/>
+  </g>
+</svg>

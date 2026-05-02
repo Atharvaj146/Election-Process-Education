@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+/* ===== shadcn/ui CSS Variables ===== */
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 215 25% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 12%;
+    --primary: 27 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 145 81% 28%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 215 51% 22%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 27 100% 60%;
+    --radius: 0.75rem;
+
+    /* Custom election colors */
+    --saffron: 27 100% 60%;
+    --indian-green: 145 81% 28%;
+    --navy: 215 40% 8%;
+    --deep-blue: 215 51% 22%;
+    --gold: 51 100% 50%;
+    --ai-purple: 263 70% 50%;
+  }
+
+  .dark {
+    --background: 215 40% 8%;
+    --foreground: 210 40% 98%;
+    --card: 215 35% 12%;
+    --card-foreground: 210 40% 98%;
+    --popover: 215 35% 12%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 27 100% 60%;
+    --primary-foreground: 215 40% 8%;
+    --secondary: 145 81% 38%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 215 51% 32%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 215 30% 16%;
+    --muted-foreground: 215 16% 60%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 30% 18%;
+    --input: 215 30% 18%;
+    --ring: 27 100% 60%;
+  }
+}
+
+/* ===== Global Base Styles ===== */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Noto Sans Devanagari', system-ui, sans-serif;
+  }
+}
+
+/* ===== Utility Classes ===== */
+@layer utilities {
+  .text-gradient-saffron {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(27 100% 60%), hsl(51 100% 50%));
+  }
+
+  .text-gradient-tricolor {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(27 100% 60%), hsl(0 0% 100%), hsl(145 81% 28%));
+  }
+
+  .glass {
+    background: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  .gradient-hero {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--card)) 50%,
+      hsl(var(--background)) 100%
+    );
+  }
+
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px hsl(0 0% 0% / 0.15);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+}
+
+/* ===== Keyframes ===== */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.5);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.7);
+}
+
+/* Chat markdown styles */
+.chat-markdown p {
+  margin: 0.25rem 0;
+}
+.chat-markdown strong {
+  font-weight: 700;
+  color: var(--foreground);
+}
+.chat-markdown ul,
+.chat-markdown ol {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+}
+.chat-markdown ul {
+  list-style-type: disc;
+}
+.chat-markdown ol {
+  list-style-type: decimal;
+}
+.chat-markdown li {
+  margin: 0.15rem 0;
+}
+.chat-markdown a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+}
+.chat-markdown h1, .chat-markdown h2, .chat-markdown h3 {
+  font-weight: 700;
+  margin: 0.75rem 0 0.25rem;
+}
+.chat-markdown code {
+  background: hsl(var(--muted));
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+}
