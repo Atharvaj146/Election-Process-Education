@@ -1,19 +1,19 @@
 steps:
-  # Build the container image with the API key
+  # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '--build-arg'
       - 'VITE_GEMINI_API_KEY=$_VITE_GEMINI_API_KEY'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/matdaan-guide'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/matdaan-repo/matdaan-guide'
       - '.'
 
-  # Push the image to Container Registry
+  # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/matdaan-guide']
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/matdaan-repo/matdaan-guide']
 
-  # Deploy image to Cloud Run
+  # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -21,12 +21,9 @@ steps:
       - 'deploy'
       - 'matdaan-guide'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/matdaan-guide'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/matdaan-repo/matdaan-guide'
       - '--region'
       - 'us-central1'
-      - '--platform'
-      - 'managed'
       - '--allow-unauthenticated'
-
-images:
-  - 'gcr.io/$PROJECT_ID/matdaan-guide'
+      - '--port'
+      - '8080'
