@@ -61,11 +61,11 @@ export default function ChatPage() {
     }
   }, [messages, isLoading])
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return
+  const handleSend = async (textOverride?: string) => {
+    const userMessage = textOverride || input.trim()
+    if (!userMessage || isLoading) return
 
-    const userMessage = input.trim()
-    setInput('')
+    if (!textOverride) setInput('')
     setMessages(prev => [...prev, { role: 'user', content: userMessage }])
     setIsLoading(true)
 
@@ -213,7 +213,33 @@ export default function ChatPage() {
         </div>
 
         <div className="p-4 sm:p-6 bg-background/50 border-t border-border/40 shrink-0">
-          <div className="flex gap-2 max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto">
+            
+            {/* Suggested Prompt Chips */}
+            {messages.length <= 1 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-wrap gap-2 mb-4"
+              >
+                {[
+                  language === 'en' ? 'Am I eligible to vote?' : 'क्या मैं वोट देने के योग्य हूँ?',
+                  language === 'en' ? 'What is a VVPAT machine?' : 'VVPAT मशीन क्या है?',
+                  language === 'en' ? 'How to register online?' : 'ऑनलाइन रजिस्टर कैसे करें?'
+                ].map((suggestion, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSend(suggestion)}
+                    disabled={isLoading}
+                    className="text-xs font-medium px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary hover:bg-primary hover:text-white transition-all disabled:opacity-50"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+
+            <div className="flex gap-2">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -223,12 +249,13 @@ export default function ChatPage() {
               disabled={isLoading}
             />
             <Button 
-              onClick={handleSend} 
+              onClick={() => handleSend()} 
               disabled={isLoading || !input.trim()}
               className="h-[60px] w-[60px] rounded-xl shrink-0 bg-primary hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
             >
               <Send className="w-6 h-6" />
             </Button>
+            </div>
           </div>
           <p className="text-[10px] text-center text-muted-foreground mt-4 uppercase tracking-widest font-bold opacity-40">
             {language === 'en' 
