@@ -10,6 +10,7 @@ COPY package.json ./
 RUN npm install --include=optional --legacy-peer-deps
 
 COPY . .
+RUN echo "VITE_GEMINI_API_KEY=${VITE_GEMINI_API_KEY}" > .env
 RUN npx vite build
 
 # Stage 2: Run the server
