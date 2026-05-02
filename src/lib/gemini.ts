@@ -1,51 +1,34 @@
-/**
- * MatDaan Gemini API Service
- * 
- * Calls the Gemini API directly from the frontend.
- */
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey);
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
 
-const systemPrompt = `You are **MatDaan Guide (मतदान गाइड)**, an AI assistant that educates Indian citizens about the election process.
-Your responses must be:
-- **Accurate**: Only use verified facts from the Election Commission of India (ECI).
-- **Non-partisan**: Never endorse, criticize, or discuss any political party, candidate, or ideology.
-- **Helpful**: Give clear, actionable answers. Use bullet points and bold text for readability.
-- **Concise**: Keep answers focused. Aim for 150-300 words unless the user asks for detail.
-- **Bilingual-aware**: You may include Hindi terms in parentheses where helpful.
-- Respond in the language of the user's query (English or Hindi).
-- Cite official sources like ECI (eci.gov.in) when relevant.
+const systemPrompt = `You are MatDaan AI, a helpful assistant for the MatDaan Guide platform.
+Your goal is to educate Indian citizens about the election process, voting rights, and procedures.
+- Provide accurate information based on Election Commission of India (ECI) guidelines.
+- Be polite, encouraging, and non-partisan.
 - If asked about political parties, candidates, or ideologies, politely decline.
 - Always use markdown formatting.`;
 
 export const geminiApi = {
-  async sendChatMessage(prompt: string, history: { role: string; parts: { text: string }[] }[] = []): Promise<string> {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) throw new Error("API Key missing");
-
+  async sendChatMessage(prompt: string, history: any[] = []): Promise<string> {
     try {
-      console.log('Attempting Direct Gemini API Call...');
-      
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [...history, { role: 'user', parts: [{ text: prompt }] }],
-          systemInstruction: { parts: [{ text: systemPrompt }] }
-        })
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-2.5-flash',
+        systemInstruction: systemPrompt
       });
 
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error?.message || `API Error ${response.status}`);
-      }
+      const chat = model.startChat({
+        history: history.map(msg => ({
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: msg.parts
+        }))
+      });
 
-      return data.candidates[0].content.parts[0].text;
+      const result = await chat.sendMessage(prompt);
+      const response = await result.response;
+      return response.text();
     } catch (error: any) {
-      console.error('Direct API Error:', error);
+      console.error('Gemini API Error:', error);
       throw error;
     }
   }

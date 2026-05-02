@@ -89,9 +89,10 @@ export default function ChatPage() {
         content: response,
         actions: actions.length > 0 ? actions : undefined
       }])
-    } catch (error) {
+    } catch (error: any) {
       console.error('Chat Error:', error)
-      toast.error(language === 'en' ? 'Failed to get response. Please check your API key.' : 'जवाब पाने में विफल। कृपया अपनी API कुंजी जांचें।')
+      const errorMessage = error?.message || "Unknown error occurred";
+      toast.error(`${language === 'en' ? "AI Error:" : "AI त्रुटि:"} ${errorMessage}`)
     } finally {
       setIsLoading(false)
     }
