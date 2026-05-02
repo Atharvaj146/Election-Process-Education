@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import { geminiApi } from '@/lib/gemini'
 import { useLanguage } from '@/context/LanguageContext'
 import { deriveActions, type ChatAction } from '@/lib/chat-utils'
+import ReactMarkdown from 'react-markdown'
 
 type Message = {
   role: 'user' | 'assistant'
@@ -159,7 +160,15 @@ export default function ChatPage() {
                       ? 'bg-primary text-primary-foreground font-bold'
                       : 'bg-muted/50 border border-border/40 chat-markdown font-medium'
                   }`}>
-                    {msg.content}
+                    {msg.role === 'assistant' ? (
+                      <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-black/50 prose-pre:border prose-pre:border-border/50">
+                        <ReactMarkdown>
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      msg.content
+                    )}
 
                     {msg.actions && msg.actions.length > 0 && (
                       <div className="px-5 pb-5 pt-3 flex flex-wrap gap-2 border-t border-border/10 bg-muted/5 mt-3 rounded-b-2xl -mx-5 -mb-4">
