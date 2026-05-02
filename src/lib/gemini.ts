@@ -23,8 +23,9 @@ Your responses must be:
 export const geminiApi = {
   async sendChatMessage(prompt: string, history: { role: string; parts: { text: string }[] }[] = []): Promise<string> {
     try {
+      console.log('Gemini API Call - Key Present:', !!import.meta.env.VITE_GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-1.5-flash',
         systemInstruction: systemPrompt,
       });
 
