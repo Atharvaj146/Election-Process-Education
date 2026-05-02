@@ -80,7 +80,7 @@ app.get('/api/health', (req, res) => {
 const distPath = join(__dirname, '../dist');
 if (existsSync(distPath)) {
   app.use(express.static(distPath));
-  app.get('*', (req, res) => {
+  app.get('/{*splat}', (req, res) => {
     // Exclude API routes from wildcard redirect
     if (req.path.startsWith('/api')) return;
     res.sendFile(join(distPath, 'index.html'));
