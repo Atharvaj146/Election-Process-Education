@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Trophy, CheckCircle2, XCircle, ArrowRight, Download } from 'lucide-react'
+import { Trophy, CheckCircle2, XCircle, ArrowRight, Download, Send } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -88,11 +88,17 @@ export default function QuizPage() {
     }
   }
 
-  const handleShare = async () => {
+  const handleShare = async (platform?: 'twitter') => {
     const shareText = language === 'en' 
-      ? `I just scored ${score}/${sessionQuestions.length} on the MatDaan Guide Voter Readiness Quiz! 🗳️ Test your Indian Election knowledge too! #MatDaanGuide #Elections`
-      : `मैंने मतदान गाइड क्विज़ में ${score}/${sessionQuestions.length} स्कोर किया! 🗳️ आप भी अपना चुनाव ज्ञान परखें! #MatDaanGuide #Elections`
+      ? `I just scored ${score}/5 on the MatDaan Guide Voter Readiness Quiz! 🗳️ Test your Indian Election knowledge too! #MatDaanGuide #Elections`
+      : `मैंने मतदान गाइड क्विज़ में ${score}/5 स्कोर किया! 🗳️ आप भी अपना चुनाव ज्ञान परखें! #MatDaanGuide #Elections`
     const url = window.location.origin
+
+    if (platform === 'twitter') {
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`
+      window.open(twitterUrl, '_blank')
+      return
+    }
     
     if (navigator.share) {
       try {
@@ -326,8 +332,11 @@ export default function QuizPage() {
                   <Button onClick={handleDownloadBadge} className="px-10 h-12 rounded-xl font-bold uppercase tracking-widest text-xs bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:opacity-90">
                     <Download className="w-4 h-4 mr-2" /> {language === 'en' ? 'Download Badge' : 'बैज डाउनलोड करें'}
                   </Button>
-                  <Button onClick={handleShare} variant="outline" className="px-10 h-12 rounded-xl font-bold uppercase tracking-widest text-xs">
+                  <Button onClick={() => handleShare()} variant="outline" className="px-10 h-12 rounded-xl font-bold uppercase tracking-widest text-xs flex-1">
                     {language === 'en' ? 'Share Score' : 'स्कोर साझा करें'}
+                  </Button>
+                  <Button onClick={() => handleShare('twitter')} variant="outline" className="px-5 h-12 rounded-xl font-bold uppercase tracking-widest text-xs border-primary/20 hover:bg-primary/5">
+                    <Send className="w-4 h-4 text-primary" />
                   </Button>
                 </div>
               </CardContent>

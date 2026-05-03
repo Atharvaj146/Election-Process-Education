@@ -1,16 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Menu, X, Vote, Moon, Sun, Languages } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/context/LanguageContext'
+import { useGoogleAuth } from '@/context/GoogleAuthContext'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { LogOut } from 'lucide-react'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [isDark, setIsDark] = useState(true)
   const location = useLocation()
   const { language, setLanguage, t } = useLanguage()
+  const { user, signIn, signOut, isLoading } = useGoogleAuth()
 
   const navLinks = [
     { label: t('nav.home'), path: '/' },
@@ -91,6 +95,39 @@ export default function Navbar() {
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </Button>
 
+            {user ? (
+              <div className="flex items-center gap-3 pl-2 border-l border-border/40 ml-1">
+                <Avatar className="h-8 w-8 border border-border/40 shadow-sm">
+                  <AvatarImage src={user.picture} alt={user.name} />
+                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={signOut}
+                  className="h-8 px-3 rounded-full text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all"
+                >
+                  <LogOut className="h-3.5 w-3.5 mr-1.5" />
+                  {t('auth.signOut')}
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={signIn}
+                  disabled={isLoading}
+                  className="rounded-full border-primary/30 text-primary hover:bg-primary/5 px-4 font-bold text-xs uppercase tracking-wider h-9"
+                >
+                  {isLoading ? (
+                    <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin mr-2" />
+                  ) : <Vote className="w-4 h-4 mr-2" />}
+                  {t('auth.signIn')}
+                </Button>
+              </div>
+            )}
+
             {/* Mobile menu button */}
             <Button
               variant="ghost"
@@ -129,6 +166,17 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          
+          {!user && (
+            <div className="pt-4 border-t border-border/40 mt-4">
+              <Button
+                onClick={signIn}
+                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold uppercase tracking-widest text-xs"
+              >
+                {t('auth.signIn')}
+              </Button>
+            </div>
+          )}
         </motion.div>
       )}
     </nav>

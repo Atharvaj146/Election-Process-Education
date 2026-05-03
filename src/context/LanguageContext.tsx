@@ -23,6 +23,8 @@ const translations: Record<Language, Record<string, string>> = {
     'chat.title': 'MatDaan Assistant',
     'chat.placeholder': 'Ask a question about the election process...',
     'chat.poweredBy': 'Powered by Gemini 2.5 Flash',
+    'auth.signIn': 'Sign In',
+    'auth.signOut': 'Sign Out',
   },
   hi: {
     'nav.home': 'मुख्य',
@@ -38,6 +40,8 @@ const translations: Record<Language, Record<string, string>> = {
     'chat.title': 'मतदान सहायक',
     'chat.placeholder': 'चुनाव प्रक्रिया के बारे में प्रश्न पूछें...',
     'chat.poweredBy': 'Gemini 2.5 Flash द्वारा संचालित',
+    'auth.signIn': 'साइन इन करें',
+    'auth.signOut': 'साइन आउट',
   }
 }
 

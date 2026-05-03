@@ -2,15 +2,18 @@
 FROM node:20-slim AS build-stage
 WORKDIR /app
 
-# Ensure Vite can see the API key from the environment
+# Ensure Vite can see the environment variables
 ARG VITE_GEMINI_API_KEY
+ARG VITE_GOOGLE_CLIENT_ID
 ENV VITE_GEMINI_API_KEY=${VITE_GEMINI_API_KEY}
+ENV VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
 
 COPY package.json ./
 RUN npm install --include=optional --legacy-peer-deps
 
 COPY . .
 RUN echo "VITE_GEMINI_API_KEY=${VITE_GEMINI_API_KEY}" > .env
+RUN echo "VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}" >> .env
 RUN npx vite build
 
 # Stage 2: Run the server

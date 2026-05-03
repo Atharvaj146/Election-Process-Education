@@ -32,11 +32,14 @@
 
 ## 🛠️ Technology Stack & Logic
 
-- **AI Core**: `Google Gemini 2.5 Flash` via `@google/generative-ai`. We chose the Flash model for its exceptionally low latency, crucial for a responsive chat experience.
+- **AI Core**: `Google Gemini 1.5 Flash` via `@google/generative-ai`.
+- **Authentication**: `Google Identity Services` (GSI) for seamless secure sign-in.
+- **Analytics**: `Google Analytics (gtag)` for tracking user engagement and quiz completions.
 - **Frontend**: `React 19`, `Vite`, `TypeScript`, `Tailwind CSS`.
-- **Animations**: `GSAP` (for scroll-triggered timeline events) and `Framer Motion` (for UI state transitions).
-- **Data Viz**: `Recharts` for accessible and interactive charting.
-- **Localization**: Custom `LanguageContext` managing a dictionary of 100+ tokens for full EN/HI support.
+- **Efficiency**: `React.lazy` and `Suspense` for route-based code splitting, minimizing initial bundle size.
+- **Animations**: `GSAP` and `Framer Motion`.
+- **Data Viz**: `Recharts`.
+- **Localization**: Custom `LanguageContext` for full EN/HI support.
 
 ---
 

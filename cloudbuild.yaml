@@ -5,6 +5,8 @@ steps:
       - 'build'
       - '--build-arg'
       - 'VITE_GEMINI_API_KEY=$_VITE_GEMINI_API_KEY'
+      - '--build-arg'
+      - 'VITE_GOOGLE_CLIENT_ID=$_VITE_GOOGLE_CLIENT_ID'
       - '-t'
       - 'us-central1-docker.pkg.dev/$PROJECT_ID/matdaan-repo/matdaan-guide'
       - '.'
